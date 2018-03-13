@@ -5,8 +5,9 @@
 # To use, place this script in the directory and call it from the command line.
 
 import shutil, os, re
+from pathlib import Path
 
-DATE_REGEX = '20\d\d[0-1]\d[0-3]\d';
+DATE_REGEX = r'20\d\d[0-1]\d[0-3]\d'
 
 # Loop through files in current directory
 for filename in os.listdir():
@@ -15,13 +16,9 @@ for filename in os.listdir():
     if datestring:
         # Get datestring from current file
         datestring = datestring.group(0)
-        # Check if directory for given date exists
-        if os.path.isdir('..//' + datestring[0:4]) == False:
-            os.makedirs('..//' + datestring[0:4])
-        if os.path.isdir('..//' + datestring[0:4] + '//' + datestring[4:6]) == False:
-            os.makedirs('..//' + datestring[0:4] + '//' + datestring[4:6])
-        if os.path.isdir('..//' + datestring[0:4] + '//' + datestring[4:6] + '//' + datestring) == False:
-            os.makedirs('..//' + datestring[0:4] + '//' + datestring[4:6] + '//' + datestring)
+        path = Path.cwd().parent / datestring[0:4] / datestring[4:6] / datestring
+        path.mkdir(parents=True, exist_ok=True)
         # Check if file is already in directory. If not, move it there.
-        if os.path.exists('..//' + datestring[0:4] + '//' + datestring[4:6] + '//' + datestring + '//' + filename) == False:
-            shutil.move('.//' + filename, '..//' + datestring[0:4] + '//' + datestring[4:6] + '//' + datestring)
+        path = path / filename
+        if path.exists() == False:
+            shutil.move('.//' + filename, str(path.parent))
