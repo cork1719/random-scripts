@@ -1,8 +1,12 @@
 # I wrote this script because I had thousands of unsorted pictures in a folder making looking through them unwieldy. This is a quick way to sort them.
 
+# Note: This is designed to be used on linux. To use on windows you must have the linux subsystem set up.
+
+# To use, place this script in the directory and call it from the command line.
+
 import shutil, os, re
 
-DATE_REGEX = '20([0-1]\d){2}[0-3]\d';
+DATE_REGEX = '20\d\d[0-1]\d[0-3]\d';
 
 # Loop through files in current directory
 for filename in os.listdir():
